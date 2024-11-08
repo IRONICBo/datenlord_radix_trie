@@ -141,6 +141,18 @@ where
             })
     }
 
+    /// Fetch the closest ancestor *key* for a given key.
+    ///
+    /// Export the key of the ancestor node returned by `get_ancestor`.
+    #[inline]
+    pub fn get_ancestor_key<'a, Q: ?Sized>(&'a self, key: &Q) -> Option<&K>
+    where
+        K: Borrow<Q>,
+        Q: TrieKey,
+    {
+        self.get_ancestor(key).and_then(|t| t.node.key())
+    }
+
     /// Fetch the closest ancestor *value* for a given key.
     ///
     /// See `get_ancestor` for precise semantics, this is just a shortcut.

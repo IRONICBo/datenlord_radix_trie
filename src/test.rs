@@ -177,6 +177,9 @@ fn nearest_ancestor() {
     assert_eq!(trie.get_ancestor_value(&"abcdefg"), trie.get(&"abcdef"));
     assert_eq!(trie.get_ancestor_value(&"abcde"), trie.get(&"abcd"));
     assert_eq!(trie.get_ancestor_value(&"aauksdjk"), trie.get(&"a"));
+
+    assert_eq!(trie.get_ancestor_key(&"abcdefg"), Some(&"abcdef"));
+    assert_eq!(trie.get_ancestor_key(&"gabcdefg"), None);
 }
 
 #[test]
