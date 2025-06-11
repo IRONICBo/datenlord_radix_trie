@@ -481,3 +481,17 @@ fn clone() {
 
     assert_eq!(t1, t2);
 }
+
+#[test]
+fn test_get_values() {
+    let trie = test_trie();
+    
+    let values: Vec<&u32> = trie.get_values();
+
+    assert_eq!(values.len(), TEST_DATA.len());
+
+    let expected_values: HashSet<u32> = TEST_DATA.iter().map(|&(_, val)| val).collect();
+    let values_set: HashSet<u32> = values.into_iter().cloned().collect();
+
+    assert_eq!(expected_values, values_set);
+}
