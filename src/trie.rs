@@ -167,6 +167,14 @@ where
     {
         self.get_ancestor(key).and_then(|t| t.node.value())
     }
+    
+    ///  Get all values references in the trie.
+    /// 
+    /// The values are returned in no particular order.
+    #[inline]
+    pub fn get_values<'a>(&'a self) -> Vec<&'a V> {
+        self.node.as_vec()
+    }
 
     /// The key may be any borrowed form of the trie's key type, but TrieKey on the borrowed
     /// form *must* match those for the key type
@@ -253,5 +261,24 @@ impl<K: TrieKey, V> Default for Trie<K, V> {
     #[inline]
     fn default() -> Self {
         Self::new()
+    }
+}
+
+impl<K, V> TrieNode<K, V>
+where
+    K: TrieKey,
+{
+    pub fn as_vec<'a>(&'a self) -> Vec<&'a V> {
+        let mut values = Vec::new();
+
+        if let Some(ref key_value) = self.key_value {
+            values.push(&key_value.value);
+        }
+        for child in self.children.iter().filter_map(|c| c.as_ref()) {
+            let child_values: Vec<&V> = child.as_vec();
+            values.extend(child_values);
+        }
+
+        values
     }
 }
